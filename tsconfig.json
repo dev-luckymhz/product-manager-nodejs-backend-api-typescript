@@ -4,9 +4,9 @@
     "module": "commonjs",                               
     "esModuleInterop": true,                                                        
     "forceConsistentCasingInFileNames": true,            
-
-    /* Type Checking */
-    "strict": true,                                     
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    /* Type Checking */                                    
     "skipLibCheck": true                                 
   }
 }
