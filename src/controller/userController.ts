@@ -4,7 +4,7 @@ import { User } from "../entity/user.entity";
 import { updateInfoValidation } from "../validation/user.validation";
 import bcryptjs from 'bcryptjs';
 
-export const fetchAll = async (req: Request, res: Response ) => { 
+export const fetchAllUser = async (req: Request, res: Response ) => { 
     const repository = getManager().getRepository(User);
     await repository.find({
         relations: ['role']
@@ -15,7 +15,7 @@ export const fetchAll = async (req: Request, res: Response ) => {
     });
 };
 
-export const SaveUser = async (req: Request, res: Response ) => {
+export const createUser = async (req: Request, res: Response ) => {
         const body = req.body;
         const {error} = updateInfoValidation.validate({
             username: body.username,
@@ -44,7 +44,7 @@ export const SaveUser = async (req: Request, res: Response ) => {
 
     export const UpdateUser = async (req: Request, res: Response) => {
         const id:any = req.params.id;
-        const {email, username} = req.body;
+        const {email, username, roleId} = req.body;
     
         const {error} = updateInfoValidation.validate({
             username: username,
@@ -57,7 +57,10 @@ export const SaveUser = async (req: Request, res: Response ) => {
         const repository = getManager().getRepository(User);
         await repository.update( {id: id}, {
             email: email,
-            username: username
+            username: username,
+            role: {
+                id: roleId
+            }
         }).then((result) => {
             return res.status(200).send({
                 message: 'Info updated',
@@ -67,6 +70,7 @@ export const SaveUser = async (req: Request, res: Response ) => {
             return res.status(500).send(err);
         });
     };
+    
     export const getOneUser = async (req: Request, res: Response) => {
         const id:any = req.params.id;
         const repository = getManager().getRepository(User);

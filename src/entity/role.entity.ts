@@ -15,5 +15,5 @@ export class Role {
         joinColumn :  { name: 'roleId', referencedColumnName:'id'},
         inverseJoinColumn: {name: 'permissionId', referencedColumnName: 'id'}
     })
-    permission: Permission[];
+    permissions: Permission[];
 }
