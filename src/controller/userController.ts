@@ -5,11 +5,26 @@ import { updateInfoValidation } from "../validation/user.validation";
 import bcryptjs from 'bcryptjs';
 
 export const fetchAllUser = async (req: Request, res: Response ) => { 
+    const take = 15;
+    const page = parseInt( req.query.page as string || '1');
     const repository = getManager().getRepository(User);
-    await repository.find({
+    await repository.findAndCount({
+        take,
+        skip: (page - 1 ) * take,
         relations: ['role']
     }).then((result) => {
-        return res.status(200).send(result)
+        const [data, total] = result;
+        return res.status(200).send({
+            data : data.map(u => {
+                const {password, ...data} = u;
+                return data;
+            }),
+            meta: {
+                total,
+                page,
+                last_page: Math.ceil(total / take)
+            }
+        })
     }).catch((err) => {
         return res.status(500).send(err);
     });
