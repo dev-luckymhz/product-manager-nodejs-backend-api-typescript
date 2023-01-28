@@ -6,7 +6,8 @@
   "scripts": {
     "start": "ts-node src/index.ts",
     "seed:role": "ts-node src/seeder/role.seeder.ts",
-    "seed:product": "ts-node src/seeder/product.seeder.ts"
+    "seed:product": "ts-node src/seeder/product.seeder.ts",
+    "seed:order": "ts-node src/seeder/order.seeder.ts"
   },
   "keywords": [],
   "author": "",
