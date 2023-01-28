@@ -1,5 +1,8 @@
 import {Router} from 'express';
+import multer from 'multer';
+import { extname } from 'path';
 import { authenticatedUser, Login, Logout, Register, UpdateInfo, UpdatePassword } from './controller/authController';
+import { UploadImage } from './controller/imageController';
 import { fetchPermission } from './controller/permissionController';
 import { createProduct, DeleteProduct, fetchAllProduct, getOneProduct, UpdateProduct } from './controller/productController';
 import { createRole, DeleteRole, fetchRole, getOneRole, UpdateRole } from './controller/roleController';
@@ -30,10 +33,19 @@ export const routes = (router: Router )=>{
     router.put('/api/role/:id', authMiddleware, UpdateRole)
     router.delete('/api/role/:id', authMiddleware, DeleteRole)
 
+    const storage = multer.diskStorage({
+        destination: "./upload",
+        filename( req, file, callback) {
+            const randomName = Math.random().toString(20).substr(2, 12);
+            return callback(null, `${randomName}${extname(file.originalname)}`)
+        },
+    })
+
+    router.post('/api/upload', authMiddleware, multer({storage}).single('image'), UploadImage)
 
     router.get('/api/product', authMiddleware, fetchAllProduct)
-    router.get('/api/role/:id', authMiddleware, getOneProduct)
-    router.post('/api/role', authMiddleware, createProduct)
-    router.put('/api/role/:id', authMiddleware, UpdateProduct)
-    router.delete('/api/role/:id', authMiddleware, DeleteProduct)
+    router.get('/api/prooduct/:id', authMiddleware, getOneProduct)
+    router.post('/api/prooduct', authMiddleware, createProduct)
+    router.put('/api/prooduct/:id', authMiddleware, UpdateProduct)
+    router.delete('/api/prooduct/:id', authMiddleware, DeleteProduct)
 }

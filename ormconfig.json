@@ -8,6 +8,8 @@
     "entities": [
         "src/entity/*.ts"
     ],
-    "logging": false,
-    "synchronize": true
+    "logging": true,
+    "synchronize": true,
+    "subscribers": [],
+    "migrations": []
     }

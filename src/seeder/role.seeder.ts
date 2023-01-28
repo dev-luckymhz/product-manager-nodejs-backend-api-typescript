@@ -27,7 +27,7 @@ createConnection().then(async (result) => {
             delete permissions[5];
             delete permissions[6];
             await roleRepository.save({
-                name: "Editor",
+                name: "Viewer",
                 permissions
             })
         } catch (error) {

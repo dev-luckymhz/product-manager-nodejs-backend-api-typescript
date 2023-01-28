@@ -11,7 +11,7 @@ export class Role {
 
     @ManyToMany(()=> Permission)
     @JoinTable({
-        name: 'rolePermission',
+        // name: 'permissionRole', // can cause an error
         joinColumn :  { name: 'roleId', referencedColumnName:'id'},
         inverseJoinColumn: {name: 'permissionId', referencedColumnName: 'id'}
     })

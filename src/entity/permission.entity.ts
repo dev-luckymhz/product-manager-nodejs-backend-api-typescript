@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Role } from "./role.entity";
 
 @Entity()
 export class Permission {
@@ -8,4 +9,7 @@ export class Permission {
 
     @Column()
     name: string;
+
+    @ManyToMany( ()=> Role)
+    roles : Role[];
 }
