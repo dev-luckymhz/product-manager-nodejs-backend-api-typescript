@@ -1,6 +1,7 @@
 import express, {Router} from 'express';
 import { authenticatedUser, Login, Logout, Register, UpdateInfo, UpdatePassword } from './controller/authController';
 import { UploadImage } from './controller/imageController';
+import { Chart, ExportToCsv, fetchAllOrder } from './controller/orderController';
 import { fetchPermission } from './controller/permissionController';
 import { createProduct, DeleteProduct, fetchAllProduct, getOneProduct, UpdateProduct } from './controller/productController';
 import { createRole, DeleteRole, fetchRole, getOneRole, UpdateRole } from './controller/roleController';
@@ -35,8 +36,16 @@ export const routes = (router: Router )=>{
     router.use('/api/uploads', express.static('./upload'))
 
     router.get('/api/product', authMiddleware, fetchAllProduct)
-    router.get('/api/prooduct/:id', authMiddleware, getOneProduct)
-    router.post('/api/prooduct', authMiddleware, createProduct)
-    router.put('/api/prooduct/:id', authMiddleware, UpdateProduct)
-    router.delete('/api/prooduct/:id', authMiddleware, DeleteProduct)
+    router.get('/api/product/:id', authMiddleware, getOneProduct)
+    router.post('/api/product', authMiddleware, createProduct)
+    router.put('/api/product/:id', authMiddleware, UpdateProduct)
+    router.delete('/api/product/:id', authMiddleware, DeleteProduct)
+
+    router.get('/api/order', authMiddleware, fetchAllOrder)
+    router.post('/api/export', authMiddleware, ExportToCsv)
+    router.get('/api/chart', authMiddleware, Chart)
+    router.get('/api/order/:id', authMiddleware, getOneProduct)
+    router.post('/api/order', authMiddleware, createProduct)
+    router.put('/api/order/:id', authMiddleware, UpdateProduct)
+    router.delete('/api/order/:id', authMiddleware, DeleteProduct)
 }

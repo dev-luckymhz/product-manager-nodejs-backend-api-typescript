@@ -19,5 +19,16 @@ export class Order {
     created_at: string
 
     @OneToMany(() => OrderItem, orderItems => orderItems.order)
-    order_items : OrderItem[]
+    order_items : OrderItem[];
+
+    public get name() : string {
+        return `${this.firstName} ${this.lastName}`
+    }
+
+    
+    public get total() : number {
+        return this.order_items.reduce((sum: number , item: OrderItem)=> sum + item.quantity * item.price, 0)
+    }
+    
+    
 }
