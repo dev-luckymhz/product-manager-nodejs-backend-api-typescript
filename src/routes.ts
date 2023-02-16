@@ -7,6 +7,7 @@ import { createProduct, DeleteProduct, fetchAllProduct, getOneProduct, UpdatePro
 import { createRole, DeleteRole, fetchRole, getOneRole, UpdateRole } from './controller/roleController';
 import { createUser, DeleteUser, fetchAllUser, getOneUser, UpdateUser } from './controller/userController';
 import { authMiddleware } from './middleware/auth.middleware';
+import { permissionMiddleware } from './middleware/permission.middleware';
 
 export const routes = (router: Router )=>{
     router.post('/api/register', Register)
@@ -17,35 +18,35 @@ export const routes = (router: Router )=>{
     router.put('/api/user/update/password', authMiddleware, UpdatePassword)
 
 
-    router.get('/api/users', authMiddleware, fetchAllUser)
-    router.get('/api/users/:id', authMiddleware, getOneUser)
-    router.post('/api/users', authMiddleware, createUser)
-    router.put('/api/users/:id', authMiddleware, UpdateUser)
-    router.delete('/api/users/:id', authMiddleware, DeleteUser)
+    router.get('/api/users', authMiddleware, permissionMiddleware('User'), fetchAllUser)
+    router.get('/api/users/:id', authMiddleware, permissionMiddleware('User'), getOneUser)
+    router.post('/api/users', authMiddleware, permissionMiddleware('User'), createUser)
+    router.put('/api/users/:id', authMiddleware,permissionMiddleware('User'),  UpdateUser)
+    router.delete('/api/users/:id', authMiddleware, permissionMiddleware('User'), DeleteUser)
 
 
-    router.get('/api/permission', authMiddleware, fetchPermission)
+    router.get('/api/permission', authMiddleware, permissionMiddleware('Role'), fetchPermission)
 
-    router.get('/api/role', authMiddleware, fetchRole)
-    router.get('/api/role/:id', authMiddleware, getOneRole)
-    router.post('/api/role', authMiddleware, createRole)
-    router.put('/api/role/:id', authMiddleware, UpdateRole)
-    router.delete('/api/role/:id', authMiddleware, DeleteRole)
+    router.get('/api/role', authMiddleware, permissionMiddleware('Role'), fetchRole)
+    router.get('/api/role/:id', authMiddleware, permissionMiddleware('Role'), getOneRole)
+    router.post('/api/role', authMiddleware, permissionMiddleware('Role'), createRole)
+    router.put('/api/role/:id', authMiddleware, permissionMiddleware('Role'), UpdateRole)
+    router.delete('/api/role/:id', authMiddleware, permissionMiddleware('Role'), DeleteRole)
 
     router.post('/api/upload', authMiddleware, UploadImage)
     router.use('/api/uploads', express.static('./upload'))
 
-    router.get('/api/product', authMiddleware, fetchAllProduct)
-    router.get('/api/product/:id', authMiddleware, getOneProduct)
-    router.post('/api/product', authMiddleware, createProduct)
-    router.put('/api/product/:id', authMiddleware, UpdateProduct)
-    router.delete('/api/product/:id', authMiddleware, DeleteProduct)
+    router.get('/api/product', authMiddleware, permissionMiddleware('Product'), fetchAllProduct)
+    router.get('/api/product/:id', authMiddleware,  permissionMiddleware('Product'), getOneProduct)
+    router.post('/api/product', authMiddleware, permissionMiddleware('Product'), createProduct)
+    router.put('/api/product/:id', authMiddleware, permissionMiddleware('Product'), UpdateProduct)
+    router.delete('/api/product/:id', authMiddleware, permissionMiddleware('Product'), DeleteProduct)
 
     router.get('/api/order', authMiddleware, fetchAllOrder)
     router.post('/api/export', authMiddleware, ExportToCsv)
     router.get('/api/chart', authMiddleware, Chart)
-    router.get('/api/order/:id', authMiddleware, getOneProduct)
-    router.post('/api/order', authMiddleware, createProduct)
-    router.put('/api/order/:id', authMiddleware, UpdateProduct)
-    router.delete('/api/order/:id', authMiddleware, DeleteProduct)
+    // router.get('/api/order/:id', authMiddleware, getOneProduct)
+    // router.post('/api/order', authMiddleware, createProduct)
+    // router.put('/api/order/:id', authMiddleware, UpdateProduct)
+    // router.delete('/api/order/:id', authMiddleware, DeleteProduct)
 }
