@@ -12,7 +12,7 @@ const body = req.body;
         username: body.username,
         email: body.email,
         password: body.password,
-        passwordConf: body.passwordConf
+        passwordConf: body.confirmPassword
     });
   
     if (error) {
