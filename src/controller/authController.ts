@@ -3,7 +3,7 @@ import { getManager } from "typeorm";
 import { User } from "../entity/user.entity";
 import { RegisterValidation, updateInfoValidation, updatePasswordValidation } from "../validation/user.validation";
 import bcryptjs from 'bcryptjs';
-import { sign, verify } from "jsonwebtoken";
+import { sign } from "jsonwebtoken";
 
 export const Register = async (req: Request, res: Response ) => {
 const body = req.body;
@@ -33,18 +33,21 @@ const body = req.body;
 
 export const Login = async (req: Request, res: Response) => {
 // const { email, passwords, rememberMe } = req.body;
-    const email :string = req.body.email;
+    const email :string = req.body?.username;
+    const password :string = req.body.password;
+
     const repository = getManager().getRepository(User);
-    await  repository.findOneBy({email : email}).then( async (result) => {
-        if (!result) {
+    await  repository.findOneBy([{email : email},{ username: email }]).then( async (result) => {
+        if (!result || !Object.keys(result).length) {
             // throw new Error("userNotFound");
+            // console.log("user not found")
             return res.status(404).send({
                 message : "user not found"
             })
         }        
-        if (!await bcryptjs.compare(req.body.password, result.password)) {
+        if (!await bcryptjs.compare(password, result.password)) {
             // throw new Error("passwordError");
-            return res.status(500).send({
+            return res.status(400).send({
                 message : "Password incorrect"
             })
         }
@@ -62,10 +65,11 @@ export const Login = async (req: Request, res: Response) => {
 
 
         return res.status(200).send({
-            message : "Loged in"
+            message : "Logged in"
         })
         
-    }).catch(async (err) => {
+    }).catch( (err) => {
+        console.log(err)
         return res.status(500).send(err);
     });
 };
