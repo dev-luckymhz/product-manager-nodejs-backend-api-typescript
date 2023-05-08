@@ -14,7 +14,7 @@ createConnection().then((connection) => {
         origin: ["http://localhost:3000"]
         }));
     routes(app);
-    app.listen(8000, ()=>{
+    app.listen(process.env.APP_PORT, ()=>{
     console.log("listening in port 8000");
     });
 }).catch((err) => {

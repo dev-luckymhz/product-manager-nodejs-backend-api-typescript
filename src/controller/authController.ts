@@ -33,9 +33,13 @@ const body = req.body;
 
 export const Login = async (req: Request, res: Response) => {
 // const { email, passwords, rememberMe } = req.body;
-    const email :string = req.body?.username;
+    const email :string = req.body.username;
     const password :string = req.body.password;
-
+    if (!email) {
+        return res.status(400).send({
+            message : " veuiller entrer un email"
+        })
+    }
     const repository = getManager().getRepository(User);
     await  repository.findOneBy([{email : email},{ username: email }]).then( async (result) => {
         if (!result || !Object.keys(result).length) {

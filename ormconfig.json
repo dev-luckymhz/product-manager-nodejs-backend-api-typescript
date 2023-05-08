@@ -4,9 +4,9 @@
     "port": 3306,
     "username": "admin",
     "password": "zobest",
-    "database": "projet-1",
+    "database": "projet-typescript",
     "entities": [
-        "src/entity/*.ts"
+        "src/entity/entity.ts"
     ],
     "logging": false,
     "synchronize": true,
