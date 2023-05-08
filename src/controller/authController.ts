@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { AppDataSource } from '../../ormconfig';
 import { getManager } from "typeorm";
 import { User } from "../entity/user.entity";
 import { RegisterValidation, updateInfoValidation, updatePasswordValidation } from "../validation/user.validation";
@@ -18,7 +19,7 @@ const body = req.body;
     if (error) {
         return res.status(400).send(error.details)
     }
-    const repository = getManager().getRepository(User);
+    const repository = AppDataSource.getRepository(User);
     await repository.save({
         email: body.email,
         username: body.username,
