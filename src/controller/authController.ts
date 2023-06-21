@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { AppDataSource } from '../../ormconfig';
-import { getManager } from "typeorm";
 import { User } from "../entity/user.entity";
 import { RegisterValidation, updateInfoValidation, updatePasswordValidation } from "../validation/user.validation";
 import bcryptjs from 'bcryptjs';
@@ -41,7 +40,7 @@ export const Login = async (req: Request, res: Response) => {
             message : " veuiller entrer un email"
         })
     }
-    const repository = getManager().getRepository(User);
+    const repository = AppDataSource.getRepository(User);
     await  repository.findOneBy([{email : email},{ username: email }]).then( async (result) => {
         if (!result || !Object.keys(result).length) {
             // throw new Error("userNotFound");
@@ -81,7 +80,7 @@ export const Login = async (req: Request, res: Response) => {
 
 export const authenticatedUser = async (req: Request, res: Response) => {
     try {
-        const repository = getManager().getRepository(User);
+        const repository = AppDataSource.getRepository(User);
         await  repository.findOneBy({id : req['uId']})
         .then( async (result) => { 
             if (!result) {
@@ -119,7 +118,7 @@ export const UpdateInfo = async (req: Request, res: Response) => {
 if (error) {
     return res.status(400).send(error.details)
 }
-    const repository = getManager().getRepository(User);
+const repository = AppDataSource.getRepository(User);
     repository.update({id: id}, {
         email: email,
         username: username
@@ -145,7 +144,7 @@ export const UpdatePassword = async (req: Request, res: Response) => {
     if (error) {
         return res.status(400).send(error.details)
     }
-    const repository = getManager().getRepository(User);
+    const repository = AppDataSource.getRepository(User);
     try {
         user = await repository.findOneBy({id : id});
     } catch (err) {

@@ -13,6 +13,6 @@ const dbConfig = {
     synchronize: true,
     subscribers: [],
     migrations: []
-    }
+    } as DataSourceOptions
 
-    export const AppDataSource = new DataSource(dbConfig as DataSourceOptions)
+    export const AppDataSource = new DataSource(dbConfig)
