@@ -192,7 +192,7 @@ For example, to install the main dependencies, run the following command:
 This project is licensed under the MIT License. You can find the license information in the LICENSE file.
 
 ## Credits
-The project was created by Zo ambinintsoa and is based on the canvas-sketch library developed by Matt DesLauriers.
+The project was created by Zo ambinintsoa.
 
 
 <p align="center">
