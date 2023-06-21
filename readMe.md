@@ -188,6 +188,10 @@ You can install these dependencies using [npm](https://www.npmjs.com/) or any ot
 
 For example, to install the main dependencies, run the following command:
 
+```shell 
+npm install bcryptjs cookie-parser cors dotenv express express-validation faker json2csv jsonwebtoken multer mysql2 nodemon reflect-metadata ts-node typeorm typescript
+```
+
 ## License
 This project is licensed under the MIT License. You can find the license information in the LICENSE file.
 
