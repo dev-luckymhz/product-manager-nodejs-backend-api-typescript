@@ -34,6 +34,10 @@ import {
 import { authMiddleware } from './middleware/auth.middleware';
 import { permissionMiddleware } from './middleware/permission.middleware';
 
+/**
+ * Attaches the routes to the Express application.
+ * @param app The Express application.
+ */
 export const routes = (router: Router) => {
     /**
      * User Authentication Routes
