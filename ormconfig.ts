@@ -1,4 +1,6 @@
-import { DataSource, DataSourceOptions } from "typeorm"
+import { DataSource, DataSourceOptions } from "typeorm";
+
+// Configuration object for the database connection
 const dbConfig = {
     type: "mysql",
     host: "localhost",
@@ -13,6 +15,7 @@ const dbConfig = {
     synchronize: true,
     subscribers: [],
     migrations: []
-    } as DataSourceOptions
+} as DataSourceOptions;
 
-    export const AppDataSource = new DataSource(dbConfig)
+// Create a new instance of the DataSource using the configuration
+export const AppDataSource = new DataSource(dbConfig);
