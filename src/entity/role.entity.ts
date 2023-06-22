@@ -4,16 +4,17 @@ import { Permission } from "./permission.entity";
 @Entity()
 export class Role {
     @PrimaryGeneratedColumn()
-    id:number;
+    id: number; // Unique identifier for the role
 
     @Column()
-    name: string;
+    name: string; // Name of the role
 
-    @ManyToMany(()=> Permission)
+    @ManyToMany(() => Permission)
     @JoinTable({
-        // name: 'permissionRole', // can cause an error
-        joinColumn :  { name: 'roleId', referencedColumnName:'id'},
-        inverseJoinColumn: {name: 'permissionId', referencedColumnName: 'id'}
+        joinColumn: { name: 'roleId', referencedColumnName: 'id' }, // Join column configuration
+        inverseJoinColumn: { name: 'permissionId', referencedColumnName: 'id' } // Inverse join column configuration
     })
-    permissions: Permission[];
+    permissions: Permission[]; // Permissions associated with the role
+
+    // No additional methods or functionalities added in this class
 }

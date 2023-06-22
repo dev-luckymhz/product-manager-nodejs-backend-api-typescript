@@ -1,65 +1,100 @@
 import { Request, Response } from "express";
 import { getManager } from "typeorm";
 import { Role } from "../entity/role.entity";
+import { AppDataSource } from "../../ormconfig";
 
+const roleRepository = AppDataSource.getRepository(Role);
 
-export const fetchRole = async (req: Request, res: Response ) => { 
-    const repository = getManager().getRepository(Role);
-    await repository.find().then((result) => {
-        return res.status(200).send(result)
-    }).catch((err) => {
-        return res.status(500).send(err);
-    });
+/**
+ * Fetch all roles.
+ * @param req - The request object.
+ * @param res - The response object.
+ */
+export const fetchRole = async (req: Request, res: Response) => {
+    try {
+        const roles = await roleRepository.find();
+        res.status(200).send(roles);
+    } catch (error) {
+        res.status(500).send(error);
+    }
 };
 
-export const createRole = async (req: Request, res: Response ) => {
-    const {name, permissions} = req.body;
-    const repository = getManager().getRepository(Role);
-    await repository.save({
-        name: name,
-        permissions: permissions.map(id => ({id}))
-        }).then((result) => {
-            return res.send(result);
-        }).catch((err) => {
-            return res.status(500).send(err);
+/**
+ * Create a new role.
+ * @param req - The request object.
+ * @param res - The response object.
+ */
+export const createRole = async (req: Request, res: Response) => {
+    const { name, permissions } = req.body;
+
+    try {
+        const role = await roleRepository.save({
+            name,
+            permissions: permissions.map(id => ({ id }))
         });
+
+        res.send(role);
+    } catch (error) {
+        res.status(500).send(error);
+    }
 };
 
+/**
+ * Get a single role by ID.
+ * @param req - The request object.
+ * @param res - The response object.
+ */
 export const getOneRole = async (req: Request, res: Response) => {
-    const id = req.params.id;
-    const repository = getManager().getRepository(Role);
-    await repository.findOne({ where :{id : parseInt(id)}, relations: { permissions: true} }).then((result) => {
-        return res.status(200).send(result);
-    }).catch((err) => {
-        return res.status(500).send(err);
-    });
-};
+    const id = parseInt(req.params.id);
 
-export const UpdateRole = async (req: Request, res: Response) => {
-    const id = req.params.id;
-    const {name, permissions} = req.body;
-
-    const repository = getManager().getRepository(Role);
-
-    await repository.update( {id: parseInt(id)}, {
-        name: name,
-        permissions: permissions.map(id => ({id}))
-        }).then((result) => {
-        return res.status(200).send({
-            message: 'Info updated',
-            result
+    try {
+        const role = await roleRepository.findOne({
+            where: { id },
+            relations: { permissions: true }
         });
-    }).catch((err) => {
-        return res.status(500).send(err);
-    });
+
+        res.status(200).send(role);
+    } catch (error) {
+        res.status(500).send(error);
+    }
 };
 
-export const DeleteRole = async (req: Request, res: Response ) => { 
-    const id = req.params.id;
-    const repository = getManager().getRepository(Role);
-    await repository.delete({id : parseInt(id)}).then((result) => {
-        return res.status(200).send(result)
-    }).catch((err) => {
-        return res.status(500).send(err);
-    });
-}
+/**
+ * Update role information.
+ * @param req - The request object.
+ * @param res - The response object.
+ */
+export const UpdateRole = async (req: Request, res: Response) => {
+    const id = parseInt(req.params.id);
+    const { name, permissions } = req.body;
+
+    try {
+        await roleRepository.update({ id }, {
+            name,
+            permissions: permissions.map(id => ({ id }))
+        });
+
+        res.status(200).send({
+            message: 'Info updated',
+            result: true
+        });
+    } catch (error) {
+        res.status(500).send(error);
+    }
+};
+
+/**
+ * Delete a role by ID.
+ * @param req - The request object.
+ * @param res - The response object.
+ */
+export const DeleteRole = async (req: Request, res: Response) => {
+    const id = parseInt(req.params.id);
+
+    try {
+        await roleRepository.delete({ id });
+        res.status(200).send(true);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+};
