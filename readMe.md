@@ -9,7 +9,7 @@
 
 # Product Manager Express API
 
-<img src="./screenshoot/screenShoot.png" alt="Alt Text" width="800" height="500" align="center" />
+<img src="./screenshoot/screenShoot.png" alt="ScreenShoot PostMan" width="800" height="500" align="center" />
 
 <br>
 <br>
